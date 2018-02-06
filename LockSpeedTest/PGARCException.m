@@ -90,10 +90,6 @@
         return mstr;
     }
 
-    -(void)dealloc {
-        [PGTestMessages addObject:[NSString stringWithFormat:@"Instance %@ deallocating.", self.instanceName]];
-    }
-
     -(instancetype)init {
         self = [super init];
 
@@ -105,6 +101,10 @@
         }
 
         return self;
+    }
+
+    -(void)dealloc {
+        [PGTestMessages addObject:[NSString stringWithFormat:@"Instance %@ deallocating.", self.instanceName]];
     }
 
     +(NSUInteger)nextInstanceNumber {
