@@ -1,43 +1,16 @@
-# Moscow
+# LockSpeedTest
 
-Moscow is intended to be a more generic and lightweight replacement for the
-[macOS DOM classes](https://developer.apple.com/documentation/foundation/archives_and_serialization/xml_processing_and_modeling?language=objc).
-One of the primary reasons for building this library is that it is not included
-in iOS, watchOS, tvOS.  The other goal was to bring the flexability of supporting
-other input and output formats besides XML - such as (but not limited to) JSON and
-INI files.
+This project was initially started to test the speed of various concurrancy locks
+in Objective-C.  However it evolved into a more general testing framework.
 
-### Comparison to Java Version
+# -fobjc-arc-exceptions
+My current use of this is to test if there was any overhead involved with using the
+clang `-fobjc-arc-exceptions` flag to ensure that memory isn't leaked when exceptions
+are thrown in Objective-C.
 
-See [Java JDK 1.8 API Documentation](http://docs.oracle.com/javase/8/docs/api/index.html?org/w3c/dom/Node.html)
+**The result?** None. The numbers I've generated (running 2 million iterations) show
+that if there is a difference it's only by a few nanoseconds at best. And, I should
+point out, that's a few nanoseconds _FASTER_ than without using `-fobjc-arc-exceptions`!
 
-Although there is a lot in Moscow that is inspired by the Java XML libraries
-there has been no attempt to model either the API or the behavior of the
-Java XML libraries completely or exactly. Changes have been made where this
-developer felt that the Java XML libraries fell short, could have been simpler,
-didn't work intuitively, or could have worked heck of a lot better.
-
-One area where Moscow diverges from the Java XML libraries is that Moscow uses the
-Objective-C design pattern of [Class Clusters](https://developer.apple.com/library/content/documentation/General/Conceptual/DevPedia-CocoaCore/ClassCluster.html)
-rather than the Java design pattern of
-[interfaces](https://docs.oracle.com/javase/tutorial/java/concepts/interface.html).
-Although Objective-C has @protocol which is similar to Java interfaces they do not
-behave exactly the same. Also class clusters provide the same functionality that
-were behind the initial reasoning of interfaces which was to not bind the interface
-to any one implementation or any implementation at all.
-
-### ARC and Exceptions
-
-Since Moscow makes use of both ARC and Exceptions it is set to compile using the clang
-_-fobjc-arc-exceptions_ compiler flag so that the reference counts of objects that are
-retained within the _@try_ block are properly updated in the event of a thrown exception.
-Very informal tests have shown that setting this flag does not have any impact on the
-size or performance of the code. In fact, at least on Linux using GNUstep, it resulted
-in code that was 2K smaller and ran a few seconds faster.  Weird!
-
-### Limitations
-
-Moscow is not thread-safe. While there are some instances of thread-safety in certain
-places it was always intended that any synchronization be left up to the code using
-Moscow. This will help Moscow to be as fast as possible in uses where multi-threading
-is not a consideration.
+All of this leads me to wonder why Apple would have chosen to NOT make this the default
+when building their own Frameworks. Anyone with some deep knowledge care to chime in?
