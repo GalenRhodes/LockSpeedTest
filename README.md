@@ -8,6 +8,29 @@ My current use of this is to test if there was any overhead involved with using 
 clang `-fobjc-arc-exceptions` flag to ensure that memory isn't leaked when exceptions
 are thrown in Objective-C.
 
+Basically I compiled this test without `-fobjc-arc-exceptions` and ran it and then
+compiled it again _WITH_ `-fobjc-arc-exceptions` and then ran it again. Each times
+it runs a simple test where it throws an exception while a variable with locality
+inside a `@try {}` block. It does this 2,000,000 times and takes an average of the
+time to complete each loop.
+
+        NSString   *str = nil;
+        NSUInteger iter = 2000000;
+        @try {
+            TestClass *test = nil;
+
+            for(NSUInteger i = 0; i < iter; ++i) {
+                test = [[TestClass alloc] init];
+                str  = [test buildString:i];
+            }
+            @throw [NSException exceptionWithName:NSGenericException reason:@"No Reason" userInfo:@{ @"Last String":str }];
+        }
+        @catch(NSException *e) {
+            [PGTestMessages addObject:[NSString stringWithFormat:@"Exception: %@; Reason: %@; User Info: %@", e.name, e.reason, e.userInfo]];
+        }
+        return iter;
+
+
 **The result?** None. The numbers I've generated (running 2 million iterations) show
 that if there is a difference it's only by a few nanoseconds at best. And, I should
 point out, that's a few nanoseconds _FASTER_ than without using `-fobjc-arc-exceptions`!
