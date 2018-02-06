@@ -44,20 +44,25 @@
 #pragma ide diagnostic ignored "OCDFAInspection"
 
     -(NSUInteger)testARCExceptions {
-        NSString   *str = nil;
-        NSUInteger iter = _ITERATIONS_;
-        @try {
-            TestClass *test = nil;
+        NSString   *str      = nil;
+        NSUInteger iter      = _ITERATIONS_;
+        NSUInteger throwWhen = (iter - 1);
 
-            for(NSUInteger i = 0; i < iter; ++i) {
+        for(NSUInteger i = 0; i < iter; ++i) {
+            @try {
+                TestClass *test = nil;
                 test = [[TestClass alloc] init];
                 str  = [test buildString:i];
+                if(i == throwWhen) {
+                    @throw [NSException exceptionWithName:NSGenericException reason:@"No Reason" userInfo:@{ @"Last String":str }];
+                }
+                [PGTestMessages addObject:@"--------------------------------------------------------------"];
             }
-            @throw [NSException exceptionWithName:NSGenericException reason:@"No Reason" userInfo:@{ @"Last String":str }];
+            @catch(NSException *e) {
+                [PGTestMessages addObject:[NSString stringWithFormat:@"Exception: %@; Reason: %@; User Info: %@", e.name, e.reason, e.userInfo]];
+            }
         }
-        @catch(NSException *e) {
-            [PGTestMessages addObject:[NSString stringWithFormat:@"Exception: %@; Reason: %@; User Info: %@", e.name, e.reason, e.userInfo]];
-        }
+
         return iter;
     }
 

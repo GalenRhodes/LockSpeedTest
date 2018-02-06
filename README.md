@@ -14,22 +14,32 @@ it runs a simple test where it throws an exception while a variable with localit
 inside a `@try {}` block. It does this 2,000,000 times and takes an average of the
 time to complete each loop.
 
-        NSString   *str = nil;
-        NSUInteger iter = 2000000;
+```objectivec
+#define _ITERATIONS_ ((uint64_t)(2000000))
+
+-(NSUInteger)testARCExceptions {
+    NSString   *str      = nil;
+    NSUInteger iter      = _ITERATIONS_;
+    NSUInteger throwWhen = (iter - 1);
+
+    for(NSUInteger i = 0; i < iter; ++i) {
         @try {
             TestClass *test = nil;
-
-            for(NSUInteger i = 0; i < iter; ++i) {
-                test = [[TestClass alloc] init];
-                str  = [test buildString:i];
+            test = [[TestClass alloc] init];
+            str  = [test buildString:i];
+            if(i == throwWhen) {
+                @throw [NSException exceptionWithName:NSGenericException reason:@"No Reason" userInfo:@{ @"Last String":str }];
             }
-            @throw [NSException exceptionWithName:NSGenericException reason:@"No Reason" userInfo:@{ @"Last String":str }];
+            [PGTestMessages addObject:@"--------------------------------------------------------------"];
         }
         @catch(NSException *e) {
             [PGTestMessages addObject:[NSString stringWithFormat:@"Exception: %@; Reason: %@; User Info: %@", e.name, e.reason, e.userInfo]];
         }
-        return iter;
+    }
 
+    return iter;
+}
+```
 
 **The result?** None. The numbers I've generated (running 2 million iterations) show
 that if there is a difference it's only by a few nanoseconds at best. And, I should
