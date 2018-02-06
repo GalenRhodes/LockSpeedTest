@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1117D42E9EE2C7ECABF2263B /* PGUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 1117D5D439828B2DF785BABB /* PGUtils.m */; };
+		1117D59BD9CE140D1C6B4162 /* PGTestLockSpeeds.m in Sources */ = {isa = PBXBuildFile; fileRef = 1117DEBFE9B6271B0699921E /* PGTestLockSpeeds.m */; };
+		1117D7C3B3B1D2B2AD08E9E2 /* PGTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1117DC58187AC99C2AB1061E /* PGTests.m */; };
+		1117DD9DB4AED8D62357E6E1 /* PGARCException.m in Sources */ = {isa = PBXBuildFile; fileRef = 1117D3B41FFCB62FE35E95A1 /* PGARCException.m */; };
 		837BB26B2024DD860012D698 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 837BB26A2024DD860012D698 /* main.m */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +27,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1117D3B41FFCB62FE35E95A1 /* PGARCException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGARCException.m; sourceTree = "<group>"; };
+		1117D42FE927276F965A576B /* PGUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGUtils.h; sourceTree = "<group>"; };
+		1117D539ADCC3E1C11946A6B /* PGTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGTests.h; sourceTree = "<group>"; };
+		1117D5D439828B2DF785BABB /* PGUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGUtils.m; sourceTree = "<group>"; };
+		1117D617BB69CD3CA202759D /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		1117D984D67FA6FA4EFE4497 /* PGARCException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGARCException.h; sourceTree = "<group>"; };
+		1117DA0B0940732DFEA9D6F2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		1117DA5A72D4B26F23BDCEF1 /* PGTestLockSpeeds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGTestLockSpeeds.h; sourceTree = "<group>"; };
+		1117DC58187AC99C2AB1061E /* PGTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGTests.m; sourceTree = "<group>"; };
+		1117DEBFE9B6271B0699921E /* PGTestLockSpeeds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGTestLockSpeeds.m; sourceTree = "<group>"; };
 		837BB2672024DD860012D698 /* LockSpeedTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LockSpeedTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		837BB26A2024DD860012D698 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -43,6 +57,8 @@
 			children = (
 				837BB2692024DD860012D698 /* LockSpeedTest */,
 				837BB2682024DD860012D698 /* Products */,
+				1117DA0B0940732DFEA9D6F2 /* README.md */,
+				1117D617BB69CD3CA202759D /* LICENSE */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +74,14 @@
 			isa = PBXGroup;
 			children = (
 				837BB26A2024DD860012D698 /* main.m */,
+				1117DC58187AC99C2AB1061E /* PGTests.m */,
+				1117D539ADCC3E1C11946A6B /* PGTests.h */,
+				1117DEBFE9B6271B0699921E /* PGTestLockSpeeds.m */,
+				1117DA5A72D4B26F23BDCEF1 /* PGTestLockSpeeds.h */,
+				1117D3B41FFCB62FE35E95A1 /* PGARCException.m */,
+				1117D984D67FA6FA4EFE4497 /* PGARCException.h */,
+				1117D5D439828B2DF785BABB /* PGUtils.m */,
+				1117D42FE927276F965A576B /* PGUtils.h */,
 			);
 			path = LockSpeedTest;
 			sourceTree = "<group>";
@@ -120,6 +144,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				837BB26B2024DD860012D698 /* main.m in Sources */,
+				1117D7C3B3B1D2B2AD08E9E2 /* PGTests.m in Sources */,
+				1117D59BD9CE140D1C6B4162 /* PGTestLockSpeeds.m in Sources */,
+				1117DD9DB4AED8D62357E6E1 /* PGARCException.m in Sources */,
+				1117D42E9EE2C7ECABF2263B /* PGUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +262,9 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q5XWZ7S7E9;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				LLVM_LTO = YES;
+				OTHER_CFLAGS = "-fobjc-arc-exceptions";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -243,6 +274,9 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q5XWZ7S7E9;
+				GCC_OPTIMIZATION_LEVEL = fast;
+				LLVM_LTO = YES;
+				OTHER_CFLAGS = "-fobjc-arc-exceptions";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -6,12 +6,18 @@
 //  Copyright © 2018 Project Galen. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "UnusedImportStatement"
 
-int main(int argc, const char * argv[]) {
+#import <Foundation/Foundation.h>
+#import "PGTests.h"
+#import "PGARCException.h"
+
+int main(int argc, const char *argv[]) {
     @autoreleasepool {
-        // insert code here...
-        NSLog(@"Hello, World!");
+        [[PGARCException new] runTests];
+        return 0;
     }
-    return 0;
 }
+
+#pragma clang diagnostic pop
