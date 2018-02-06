@@ -112,7 +112,9 @@ _FASTER_ than without using `-fobjc-arc-exceptions`!
 | Run | Without Flag | With Flag |
 |:---:|:------------:|:---------:|
 | 1 | 12,720.9940 ns | 12,391.1695 ns |
-
+| 2 | 12,440.9565 ns | 12,268.1410 ns |
+| 3 | 12,195.2575 ns | 12,267.5080 ns |
+| **Average** | **12,452.4027 ns** | **12,308.9395 ns** |
 
 All of this leads me to wonder why Apple would have chosen to NOT make this the
 default when building their own Frameworks. Anyone with some deep knowledge care
