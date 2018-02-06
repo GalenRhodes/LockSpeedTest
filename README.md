@@ -106,7 +106,7 @@ point.
 
 **The result?** No difference. None. The numbers I've generated (running it three
 times each way and taking the average) show that if there is a difference it's only
-by a few nanoseconds at best. And, I should point out, that's a few nanoseconds
+by a 140 nanoseconds at best. And, I should point out, that's a 140 nanoseconds
 _FASTER_ than without using `-fobjc-arc-exceptions`!
 
 | Run | Without Flag | With Flag |
