@@ -23,6 +23,8 @@
 
 #import "PGARCException.h"
 
+NSRecursiveLock *rlock = nil;
+
 @interface TestClass : NSObject
 
     @property(nonatomic, readonly) NSArray<NSString *> *wordList;
@@ -45,25 +47,22 @@
 
     -(NSUInteger)testARCExceptions {
         NSString   *str      = nil;
-        NSUInteger iter      = _ITERATIONS_;
-        NSUInteger throwWhen = (iter - 1);
+        NSUInteger throwWhen = (_ITERATIONS_ - 1);
 
-        for(NSUInteger i = 0; i < iter; ++i) {
+        for(NSUInteger i = 0; i < _ITERATIONS_; ++i) {
             @try {
                 TestClass *test = nil;
                 test = [[TestClass alloc] init];
                 str  = [test buildString:i];
-                if(i == throwWhen) {
-                    @throw [NSException exceptionWithName:NSGenericException reason:@"No Reason" userInfo:@{@"Last String": str}];
-                }
-                [PGLogQ addObject:@"--------------------------------------------------------------"];
+                if(i == throwWhen) @throw [NSException exceptionWithName:NSGenericException reason:@"No Reason" userInfo:@{@"Last String": str}];
+                PGLog(@"%@", @"--------------------------------------------------------------");
             }
             @catch(NSException *e) {
-                [PGLogQ addObject:[NSString stringWithFormat:@"Exception: %@; Reason: %@; User Info: %@", e.name, e.reason, e.userInfo]];
+                PGLog(@"Exception: %@; Reason: %@; User Info: %@", e.name, e.reason, e.userInfo);
             }
         }
 
-        return iter;
+        return _ITERATIONS_;
     }
 
 #pragma clang diagnostic pop
@@ -97,14 +96,22 @@
             _instanceNumber = [[self class] nextInstanceNumber];
             _instanceName   = [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[self class] formattedInstanceNumber:self.instanceNumber]];
             _wordList       = [[self class] masterWordList];
-            [PGLogQ addObject:[NSString stringWithFormat:@"Instance %@ created.", self.instanceName]];
+            PGLog(@"Instance %@ created.", self.instanceName);
         }
 
         return self;
     }
 
+    +(void)initialize {
+        static NSUInteger foo = 0;
+        if(rlock == nil) {
+            PGLog(@"Initializing recursive lock: %@", [[PGTests numberFormatter:0] stringFromNumber:@(++foo)]);
+            rlock = [NSRecursiveLock new];
+        }
+    }
+
     -(void)dealloc {
-        [PGLogQ addObject:[NSString stringWithFormat:@"Instance %@ deallocated.", self.instanceName]];
+        PGLog(@"Instance %@ deallocated.", self.instanceName);
     }
 
     +(NSUInteger)nextInstanceNumber {

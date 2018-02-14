@@ -27,7 +27,7 @@
 #import <Foundation/Foundation.h>
 #import "PGUtils.h"
 
-#define _ITERATIONS_ ((uint64_t)(20000000))
+#define _ITERATIONS_ ((NSUInteger)(20000000))
 
 typedef enum _pg_exception_point {
     PGExceptionPointBefore, PGExceptionPointDuring, PGExceptionPointAfter

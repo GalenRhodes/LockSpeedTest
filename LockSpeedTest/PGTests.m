@@ -90,20 +90,14 @@
     }
 
     -(BOOL)onException:(NSException *)exception testCaseName:(NSString *)testCaseName when:(PGExceptionPoint)when {
-        [PGLogQ addObject:[NSString stringWithFormat:@"Exception %@ test case \"%@\": %@, %@",
-                                                     [[self class] exceptionPointDescription:when],
-                                                     testCaseName,
-                                                     exception,
-                                                     [exception userInfo]]];
+        PGLog(@"Exception %@ test case \"%@\": %@, %@", [[self class] exceptionPointDescription:when], testCaseName, exception, [exception userInfo]);
         return NO;
     }
 
     -(BOOL)isTestCase:(Method)m target:(SEL)sel {
         const char *nam       = sel_getName(sel);
         char       *typ       = method_copyReturnType(m);
-        BOOL       isTestCase = ((method_getNumberOfArguments(m) == 2) &&
-                                 (strcmp(typ, @encode(NSUInteger)) == 0) &&
-                                 (strlen(nam) > PG_TEST_PREFIX_LEN) &&
+        BOOL       isTestCase = ((method_getNumberOfArguments(m) == 2) && (strcmp(typ, @encode(NSUInteger)) == 0) && (strlen(nam) > PG_TEST_PREFIX_LEN) &&
                                  (strncmp(nam, PG_TEST_PREFIX, PG_TEST_PREFIX_LEN) == 0));
         free(typ);
         return isTestCase;
@@ -119,7 +113,7 @@
         BOOL             tcStopTests   = NO;
         PGExceptionPoint exceptionPoint;
 
-        [PGLogQ addObject:[NSString stringWithFormat:@"Starting test case \"%@\".", tcName]];
+        PGLog(@"Starting test case \"%@\".", tcName);
 
         @try {
             exceptionPoint = PGExceptionPointBefore;
@@ -147,17 +141,14 @@
         }
         @finally {
             if(tcIterations > 1) {
-                [PGLogQ addObject:[NSString stringWithFormat:@"Finished test case \"%@\": %@ seconds; %@ iterations; %@ nanoseconds/iteration",
-                                                             tcName,
-                                                             [_df stringFromNumber:@(tcTotalTime)],
-                                                             [_if stringFromNumber:@(tcIterations)],
-                                                             [_df stringFromNumber:@(tcTimePerIter)]]];
+                PGLog(@"Finished test case \"%@\": %@ seconds; %@ iterations; %@ nanoseconds/iteration",
+                      tcName,
+                      [_df stringFromNumber:@(tcTotalTime)],
+                      [_if stringFromNumber:@(tcIterations)],
+                      [_df stringFromNumber:@(tcTimePerIter)]);
             }
             else {
-                [PGLogQ addObject:[NSString stringWithFormat:@"Finished test case \"%@\": %@ seconds; %@ iterations",
-                                                             tcName,
-                                                             [_df stringFromNumber:@(tcTotalTime)],
-                                                             [_if stringFromNumber:@(tcIterations)]]];
+                PGLog(@"Finished test case \"%@\": %@ seconds; %@ iterations", tcName, [_df stringFromNumber:@(tcTotalTime)], [_if stringFromNumber:@(tcIterations)]);
             }
 
             PGPrintLogMessages();
