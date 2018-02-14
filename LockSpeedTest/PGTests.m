@@ -27,8 +27,6 @@
 #define PG_TEST_PREFIX     ("test")
 #define PG_TEST_PREFIX_LEN (strlen(PG_TEST_PREFIX))
 
-NSMutableArray<NSString *> *PGTestMessages = nil;
-
 @implementation PGTests {
         NSNumberFormatter *_if;
         NSNumberFormatter *_df;
@@ -73,6 +71,7 @@ NSMutableArray<NSString *> *PGTestMessages = nil;
             _totalTime = (_stopTime - _startTime);
             free(methodList);
             PGLog(@"All tests completed in %@ seconds.", [[[self class] numberFormatter:4] stringFromNumber:@(_totalTime)]);
+            PGPrintLogMessages();
         }
 
         return results;
@@ -91,7 +90,11 @@ NSMutableArray<NSString *> *PGTestMessages = nil;
     }
 
     -(BOOL)onException:(NSException *)exception testCaseName:(NSString *)testCaseName when:(PGExceptionPoint)when {
-        PGLog(@"Exception %@ test case \"%@\": %@, %@", [[self class] exceptionPointDescription:when], testCaseName, exception, [exception userInfo]);
+        [PGLogQ addObject:[NSString stringWithFormat:@"Exception %@ test case \"%@\": %@, %@",
+                                                     [[self class] exceptionPointDescription:when],
+                                                     testCaseName,
+                                                     exception,
+                                                     [exception userInfo]]];
         return NO;
     }
 
@@ -116,7 +119,7 @@ NSMutableArray<NSString *> *PGTestMessages = nil;
         BOOL             tcStopTests   = NO;
         PGExceptionPoint exceptionPoint;
 
-        PGLog(@"Starting test case \"%@\".", tcName);
+        [PGLogQ addObject:[NSString stringWithFormat:@"Starting test case \"%@\".", tcName]];
 
         @try {
             exceptionPoint = PGExceptionPointBefore;
@@ -132,7 +135,7 @@ NSMutableArray<NSString *> *PGTestMessages = nil;
 
             [inv getReturnValue:&tcIterations];
             tcTotalTime   = (tcStopTime - tcStartTime);
-            tcTimePerIter = ((tcTotalTime / (double)(tcIterations ? : 1)) * _NANO_);
+            tcTimePerIter = ((tcTotalTime / (double)(tcIterations ?: 1)) * _NANO_);
 
             exceptionPoint = PGExceptionPointAfter;
             [self afterTest:tcName totalTime:tcTotalTime];
@@ -143,44 +146,34 @@ NSMutableArray<NSString *> *PGTestMessages = nil;
             tcStopTests = [self onException:exception testCaseName:tcName when:exceptionPoint];
         }
         @finally {
-            PGLog(@"LOG: %@", PGTestMessages);
-
             if(tcIterations > 1) {
-                PGLog(@"Finished test case \"%@\": %@ seconds; %@ iterations; %@ nanoseconds/iteration",
-                      tcName,
-                      [_df stringFromNumber:@(tcTotalTime)],
-                      [_if stringFromNumber:@(tcIterations)],
-                      [_df stringFromNumber:@(tcTimePerIter)]);
+                [PGLogQ addObject:[NSString stringWithFormat:@"Finished test case \"%@\": %@ seconds; %@ iterations; %@ nanoseconds/iteration",
+                                                             tcName,
+                                                             [_df stringFromNumber:@(tcTotalTime)],
+                                                             [_if stringFromNumber:@(tcIterations)],
+                                                             [_df stringFromNumber:@(tcTimePerIter)]]];
             }
             else {
-                PGLog(@"Finished test case \"%@\": %@ seconds; %@ iterations", tcName, [_df stringFromNumber:@(tcTotalTime)], [_if stringFromNumber:@(tcIterations)]);
+                [PGLogQ addObject:[NSString stringWithFormat:@"Finished test case \"%@\": %@ seconds; %@ iterations",
+                                                             tcName,
+                                                             [_df stringFromNumber:@(tcTotalTime)],
+                                                             [_if stringFromNumber:@(tcIterations)]]];
             }
 
-            [PGTestMessages removeAllObjects];
+            PGPrintLogMessages();
         }
 
         return tcStopTests;
     }
 
-    +(void)initialize {
-        static NSUInteger initcc = 0;
-        if(PGTestMessages == nil) {
-            PGLog(@"Initializing PGTestMessages array: %lu", ++initcc);
-            PGTestMessages = [NSMutableArray new];
-        }
-    }
-
     +(NSString *)exceptionPointDescription:(PGExceptionPoint)exceptionPoint {
         NSString *swhen = nil;
         switch(exceptionPoint) {
-            case PGExceptionPointBefore:
-                swhen = @"before";
+            case PGExceptionPointBefore:swhen = @"before";
                 break;
-            case PGExceptionPointAfter:
-                swhen = @"after";
+            case PGExceptionPointAfter:swhen = @"after";
                 break;
-            case PGExceptionPointDuring:
-                swhen = @"during";
+            case PGExceptionPointDuring:swhen = @"during";
                 break;
         }
         return swhen;

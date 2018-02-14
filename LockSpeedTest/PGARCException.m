@@ -54,12 +54,12 @@
                 test = [[TestClass alloc] init];
                 str  = [test buildString:i];
                 if(i == throwWhen) {
-                    @throw [NSException exceptionWithName:NSGenericException reason:@"No Reason" userInfo:@{ @"Last String":str }];
+                    @throw [NSException exceptionWithName:NSGenericException reason:@"No Reason" userInfo:@{@"Last String": str}];
                 }
-                [PGTestMessages addObject:@"--------------------------------------------------------------"];
+                [PGLogQ addObject:@"--------------------------------------------------------------"];
             }
             @catch(NSException *e) {
-                [PGTestMessages addObject:[NSString stringWithFormat:@"Exception: %@; Reason: %@; User Info: %@", e.name, e.reason, e.userInfo]];
+                [PGLogQ addObject:[NSString stringWithFormat:@"Exception: %@; Reason: %@; User Info: %@", e.name, e.reason, e.userInfo]];
             }
         }
 
@@ -97,14 +97,14 @@
             _instanceNumber = [[self class] nextInstanceNumber];
             _instanceName   = [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[self class] formattedInstanceNumber:self.instanceNumber]];
             _wordList       = [[self class] masterWordList];
-            [PGTestMessages addObject:[NSString stringWithFormat:@"Instance %@ created.", self.instanceName]];
+            [PGLogQ addObject:[NSString stringWithFormat:@"Instance %@ created.", self.instanceName]];
         }
 
         return self;
     }
 
     -(void)dealloc {
-        [PGTestMessages addObject:[NSString stringWithFormat:@"Instance %@ deallocating.", self.instanceName]];
+        [PGLogQ addObject:[NSString stringWithFormat:@"Instance %@ deallocated.", self.instanceName]];
     }
 
     +(NSUInteger)nextInstanceNumber {

@@ -41,7 +41,7 @@
         return self;
     }
 
-    -(unsigned long long)testNSRecursiveLock {
+    -(NSUInteger)testNSRecursiveLock {
         for(uint64_t i = 0; i < _ITERATIONS_;) {
             [rlock lock];
             ++i;
@@ -51,7 +51,7 @@
         return _ITERATIONS_;
     }
 
-    -(unsigned long long)testNSLock {
+    -(NSUInteger)testNSLock {
         for(uint64_t i = 0; i < _ITERATIONS_;) {
             [lock lock];
             ++i;
@@ -60,7 +60,7 @@
         return _ITERATIONS_;
     }
 
-    -(unsigned long long)testExceptionSafeNSRecursiveLock {
+    -(NSUInteger)testExceptionSafeNSRecursiveLock {
         for(uint64_t i = 0; i < _ITERATIONS_;) {
             [rlock lock];
             @try {
@@ -73,7 +73,7 @@
         return _ITERATIONS_;
     }
 
-    -(unsigned long long)testExceptionSafeNSLock {
+    -(NSUInteger)testExceptionSafeNSLock {
         for(uint64_t i = 0; i < _ITERATIONS_;) {
             [lock lock];
             @try {
@@ -86,7 +86,7 @@
         return _ITERATIONS_;
     }
 
-    -(unsigned long long)testSynchronized {
+    -(NSUInteger)testSynchronized {
         for(uint64_t i = 0; i < _ITERATIONS_;) {
             @synchronized(lockMe) {
                 ++i;

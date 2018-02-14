@@ -26,15 +26,26 @@
 
 #import <Foundation/Foundation.h>
 
+#define _NANO_ ((double)(1000000000.0))
+
 NS_ASSUME_NONNULL_BEGIN
 
+FOUNDATION_EXPORT NSString *const PGLogOutputPath;
+
+FOUNDATION_EXPORT NSMutableArray<NSString *> *_Nullable PGLogQ;
+
 FOUNDATION_EXPORT void PGLog(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
+
+FOUNDATION_EXPORT void PGPrintLogMessages(void);
 
 #ifndef __APPLE__
 
 FOUNDATION_EXPORT double CFAbsoluteTimeGetCurrent(void);
 
 #endif
+
+@interface PGLoader : NSObject
+@end
 
 NS_ASSUME_NONNULL_END
 

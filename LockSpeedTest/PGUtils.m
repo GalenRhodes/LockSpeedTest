@@ -23,14 +23,45 @@
 
 #import "PGUtils.h"
 
+NSString *const PGLogOutputPath = @"/dev/stdout";
+NSMutableArray<NSString *> *PGLogQ = nil;
+
+@implementation PGLoader
+
+    +(void)initialize {
+        static NSUInteger initcc = 0;
+        if(PGLogQ == nil) {
+            PGLog(@"Initializing PGLogQ: %lu", ++initcc);
+            PGLogQ = [NSMutableArray arrayWithCapacity:256 * 1024];
+        }
+    }
+
+@end
+
+void PGPrintLogLine(NSMutableString *mstr, NSString *str) {
+    [mstr appendString:@"LOG: "];
+    [mstr appendString:str];
+    [mstr appendString:@"\n"];
+    [mstr writeToFile:PGLogOutputPath atomically:NO encoding:NSUTF8StringEncoding error:nil];
+    [mstr setString:@""];
+}
+
+void _PGPrintLogLine(NSString *line) {
+    PGPrintLogLine([NSMutableString stringWithCapacity:line.length + 10], line ?: @"");
+}
+
 void PGLog(NSString *format, ...) {
-    NSString *str = nil;
-    va_list  vargs;
+    va_list vargs;
     va_start(vargs, format);
-    str = [[NSString alloc] initWithFormat:format arguments:vargs];
+    NSString *str = [[NSString alloc] initWithFormat:format arguments:vargs];
+    if(PGLogQ) [PGLogQ addObject:str]; else _PGPrintLogLine(str);
     va_end(vargs);
-    [str writeToFile:@"/dev/stdout" atomically:NO encoding:NSUTF8StringEncoding error:nil];
-    [@"\n" writeToFile:@"/dev/stdout" atomically:NO encoding:NSUTF8StringEncoding error:nil];
+}
+
+void PGPrintLogMessages(void) {
+    NSMutableString *mstr = [NSMutableString new];
+    for(NSString    *str in PGLogQ) PGPrintLogLine(mstr, str);
+    [PGLogQ removeAllObjects];
 }
 
 #ifndef __APPLE__

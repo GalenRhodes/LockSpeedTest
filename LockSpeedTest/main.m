@@ -11,11 +11,13 @@
 
 #import <Foundation/Foundation.h>
 #import "PGTests.h"
-#import "PGARCException.h"
+#import "PGTestLockSpeeds.h"
 
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
-        [[PGARCException new] runTests];
+        [PGLoader new];
+        // [[PGARCException new] runTests];
+        [[PGTestLockSpeeds new] runTests];
         return 0;
     }
 }

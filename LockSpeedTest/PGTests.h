@@ -27,16 +27,13 @@
 #import <Foundation/Foundation.h>
 #import "PGUtils.h"
 
-#define _ITERATIONS_ ((uint64_t)(2000000))
-#define _NANO_       ((double)(1000000000.0))
+#define _ITERATIONS_ ((uint64_t)(20000000))
 
 typedef enum _pg_exception_point {
     PGExceptionPointBefore, PGExceptionPointDuring, PGExceptionPointAfter
-}                                            PGExceptionPoint;
+} PGExceptionPoint;
 
 NS_ASSUME_NONNULL_BEGIN
-
-FOUNDATION_EXPORT NSMutableArray<NSString *> *PGTestMessages;
 
 @interface PGTests : NSObject
 

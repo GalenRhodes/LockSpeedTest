@@ -264,6 +264,7 @@
 				DEVELOPMENT_TEAM = Q5XWZ7S7E9;
 				GCC_OPTIMIZATION_LEVEL = fast;
 				LLVM_LTO = YES;
+				OTHER_CFLAGS = "-fobjc-arc-exceptions";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -275,6 +276,7 @@
 				DEVELOPMENT_TEAM = Q5XWZ7S7E9;
 				GCC_OPTIMIZATION_LEVEL = fast;
 				LLVM_LTO = YES;
+				OTHER_CFLAGS = "-fobjc-arc-exceptions";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
