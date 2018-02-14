@@ -40,6 +40,21 @@ NSRecursiveLock *rlock = nil;
 @end
 
 @implementation PGARCException {
+        NSUInteger _iterations;
+    }
+
+    -(instancetype)initWithIterations:(NSUInteger)iterations {
+        self = [super init];
+
+        if(self) {
+            _iterations = iterations ?: 1;
+        }
+
+        return self;
+    }
+
+    -(instancetype)init {
+        return (self = [self initWithIterations:1]);
     }
 
 #pragma clang diagnostic push
@@ -47,9 +62,9 @@ NSRecursiveLock *rlock = nil;
 
     -(NSUInteger)testARCExceptions {
         NSString   *str      = nil;
-        NSUInteger throwWhen = (_ITERATIONS_ - 1);
+        NSUInteger throwWhen = (_iterations - 1);
 
-        for(NSUInteger i = 0; i < _ITERATIONS_; ++i) {
+        for(NSUInteger i = 0; i < _iterations; ++i) {
             @try {
                 TestClass *test = nil;
                 test = [[TestClass alloc] init];
@@ -62,7 +77,7 @@ NSRecursiveLock *rlock = nil;
             }
         }
 
-        return _ITERATIONS_;
+        return _iterations;
     }
 
 #pragma clang diagnostic pop

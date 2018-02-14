@@ -12,12 +12,28 @@
 #import <Foundation/Foundation.h>
 #import "PGTests.h"
 #import "PGTestLockSpeeds.h"
+#import "PGARCException.h"
+
+#define TEST_ARC   0
+#define TEST_LOCKS 1
+
+#define RUN_TEST TEST_ARC
 
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
+        PGTests *test = nil;
         [PGLoader new];
-        // [[PGARCException new] runTests];
-        [[PGTestLockSpeeds new] runTests];
+
+        switch(RUN_TEST) {
+            case TEST_ARC: test = [[PGARCException alloc] initWithIterations:20000];
+                break;
+            case TEST_LOCKS:test = [[PGTestLockSpeeds alloc] initWithIterations:20000000];
+                break;
+            default: test = nil;
+                break;
+        }
+
+        [test runTests];
         return 0;
     }
 }

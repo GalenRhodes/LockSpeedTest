@@ -29,6 +29,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PGARCException : PGTests
+
+    -(instancetype)initWithIterations:(NSUInteger)iterations;
 @end
 
 NS_ASSUME_NONNULL_END

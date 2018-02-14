@@ -27,41 +27,47 @@
         NSRecursiveLock *rlock;
         NSLock          *lock;
         NSString        *lockMe;
+        NSUInteger      _iterations;
     }
 
-    -(instancetype)init {
-        self = [super init];
+    -(instancetype)initWithIterations:(NSUInteger)iterations {
+        self = [self init];
 
         if(self) {
-            rlock  = [NSRecursiveLock new];
-            lock   = [NSLock new];
-            lockMe = @"lockMe";
+            rlock       = [NSRecursiveLock new];
+            lock        = [NSLock new];
+            lockMe      = @"lockMe";
+            _iterations = iterations ?: 1;
         }
 
         return self;
     }
 
+    -(instancetype)init {
+        return (self = [self initWithIterations:1]);
+    }
+
     -(NSUInteger)testNSRecursiveLock {
-        for(uint64_t i = 0; i < _ITERATIONS_;) {
+        for(uint64_t i = 0; i < _iterations;) {
             [rlock lock];
             ++i;
             [rlock unlock];
         }
 
-        return _ITERATIONS_;
+        return _iterations;
     }
 
     -(NSUInteger)testNSLock {
-        for(uint64_t i = 0; i < _ITERATIONS_;) {
+        for(uint64_t i = 0; i < _iterations;) {
             [lock lock];
             ++i;
             [lock unlock];
         }
-        return _ITERATIONS_;
+        return _iterations;
     }
 
     -(NSUInteger)testExceptionSafeNSRecursiveLock {
-        for(uint64_t i = 0; i < _ITERATIONS_;) {
+        for(uint64_t i = 0; i < _iterations;) {
             [rlock lock];
             @try {
                 ++i;
@@ -70,11 +76,11 @@
                 [rlock unlock];
             }
         }
-        return _ITERATIONS_;
+        return _iterations;
     }
 
     -(NSUInteger)testExceptionSafeNSLock {
-        for(uint64_t i = 0; i < _ITERATIONS_;) {
+        for(uint64_t i = 0; i < _iterations;) {
             [lock lock];
             @try {
                 ++i;
@@ -83,16 +89,16 @@
                 [lock unlock];
             }
         }
-        return _ITERATIONS_;
+        return _iterations;
     }
 
     -(NSUInteger)testSynchronized {
-        for(uint64_t i = 0; i < _ITERATIONS_;) {
+        for(uint64_t i = 0; i < _iterations;) {
             @synchronized(lockMe) {
                 ++i;
             }
         }
-        return _ITERATIONS_;
+        return _iterations;
     }
 
 @end

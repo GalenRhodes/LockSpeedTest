@@ -30,6 +30,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PGTestLockSpeeds : PGTests
+
+    -(instancetype)initWithIterations:(NSUInteger)iterations;
 @end
 
 NS_ASSUME_NONNULL_END
